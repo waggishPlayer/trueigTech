@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPlanHub - Authentication</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="auth-page">
+    <div class="auth-background"></div>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2 id="authTitle">Welcome Back</h2>
+            <p id="authSubtitle">Please sign in to continue</p>
+        </div>
+
+        <div class="auth-tabs">
+            <button class="tab active" id="loginTab">Login</button>
+            <button class="tab" id="signupTab">Sign Up</button>
+        </div>
+
+        <form id="loginForm" class="auth-form active">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="loginEmail" required placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+
+        <form id="signupForm" class="auth-form" style="display: none;">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="signupName" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="signupEmail" required placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="signupPassword" required placeholder="Create a password">
+            </div>
+            <!-- Role hidden input, set by JS based on URL param -->
+            <input type="hidden" id="signupRole">
+
+            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+
+        <div class="auth-footer">
+            <a href="index.html">Back to Home</a>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script src="app.js"></script>
+</body>
+
+</html>
