@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPlanHub - Processing Payment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        .simulation-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .simulation-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        .spinner-large {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 2rem;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+
+            100% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="simulation-container">
+        <div class="spinner-large"></div>
+        <h1 class="simulation-title">Payment Simulation</h1>
+        <p style="font-size: 1.5rem; color: var(--text-secondary);">Processing your secure mock payment...</p>
+        <p id="redirectMsg"
+            style="margin-top: 1rem; color: var(--text-secondary); opacity: 0; transition: opacity 0.5s;">Payment
+            Successful! Redirecting...</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const API_BASE = 'http://localhost:5001';
+            const urlParams = new URLSearchParams(window.location.search);
+            const planId = urlParams.get('planId');
+            const token = localStorage.getItem('token');
+
+            if (!planId || !token) {
+                alert('Invalid session. Redirecting to dashboard.');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Simulate delay then process
+            setTimeout(async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/plans/${planId}/subscribe`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+
+                    if (res.ok) {
+                        document.getElementById('redirectMsg').style.opacity = '1';
+                        // Store a flag so dashboard knows to show a success toast
+                        localStorage.setItem('paymentSuccess', 'true');
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1500);
+                    } else {
+                        const data = await res.json();
+                        alert('Payment Failed: ' + (data.error || 'Unknown error'));
+                        window.location.href = 'dashboard.html';
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert('Network error during payment.');
+                    window.location.href = 'dashboard.html';
+                }
+            }, 3000); // 3 seconds simulation
+        });
+    </script>
+</body>
+
+</html>

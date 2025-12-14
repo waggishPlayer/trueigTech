@@ -23,9 +23,17 @@ const elements = {
     toast: document.getElementById('toast')
 };
 
+let currentPlanId = null;
+
 // --- Initialization Logic ---
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname;
+
+    // Check for Payment Success Flag
+    if (path.includes('dashboard.html') && localStorage.getItem('paymentSuccess')) {
+        showToast('Payment Successful! You are now subscribed.', 'success');
+        localStorage.removeItem('paymentSuccess');
+    }
 
     if (path.includes('auth.html')) {
         initAuthPage();
@@ -267,23 +275,11 @@ async function viewPlan(planId) {
 }
 
 async function subscribeToPlan(planId) {
+    // Redirect to Payment Simulation Page
     try {
-        const res = await fetch(`${API_BASE}/plans/${planId}/subscribe`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-
-        if (res.ok) {
-            showToast('Subscription successful!', 'success');
-            elements.modal.style.display = 'none';
-            loadAllPlans();
-            loadFeed();
-        } else {
-            showToast(data.error || 'Subscription failed', 'error');
-        }
+        window.location.href = `payment-simulation.html?planId=${planId}`;
     } catch (error) {
-        handleNetworkError(error, 'Unable to complete subscription');
+        handleNetworkError(error, 'Error initiating subscription');
     }
 }
 
@@ -501,6 +497,8 @@ if (elements.modal) {
         }
     });
 }
+
+
 
 function showToast(message, type = '') {
     if (!elements.toast) return;
