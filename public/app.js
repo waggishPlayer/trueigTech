@@ -27,17 +27,19 @@ let currentPlanId = null;
 
 // --- Initialization Logic ---
 document.addEventListener('DOMContentLoaded', () => {
-    const path = window.location.pathname;
+    // Robust detection based on elements present, not just URL path
+    const isAuthPage = document.getElementById('authTitle');
+    const isDashboardPage = document.getElementById('userDashboard') || document.getElementById('trainerDashboard');
 
-    // Check for Payment Success Flag
-    if (path.includes('dashboard.html') && localStorage.getItem('paymentSuccess')) {
+    // Check for Payment Success Flag (on dashboard)
+    if (isDashboardPage && localStorage.getItem('paymentSuccess')) {
         showToast('Payment Successful! You are now subscribed.', 'success');
         localStorage.removeItem('paymentSuccess');
     }
 
-    if (path.includes('auth.html')) {
+    if (isAuthPage) {
         initAuthPage();
-    } else if (path.includes('dashboard.html')) {
+    } else if (isDashboardPage) {
         initDashboardPage();
     }
 });
