@@ -1,146 +1,94 @@
 # FitPlanHub
 
-A fitness plan management platform where trainers can create and manage fitness plans, and users can discover, subscribe to, and follow trainers.
+**FitPlanHub** is a full-stack fitness plan marketplace connecting specialized trainers with fitness enthusiasts. Trainers can create and sell personalized workout plans, while users can subscribe to plans, follow trainers, and receive a curated fee.
 
-## Tech Stack
-
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB with Mongoose
-- **Authentication**: JWT with bcrypt
-- **Frontend**: Vanilla HTML, CSS, JavaScript
-
-## Features
+## 🚀 Features
 
 ### For Users
-- Browse all available fitness plans
-- Subscribe to plans (simulated payment)
-- View full plan details after subscription
-- Follow/unfollow trainers
-- Personalized feed showing plans from followed trainers
-- Mobile-responsive interface
+- **Personalized Feed**: See plans from trainers you follow.
+- **Advanced Search**: Filter plans by price, duration, and trainer.
+- **Secure Subscription**: Mock payment simulation flow for subscribing to plans.
+- **Trainer Interaction**: Follow/Unfollow trainers to curate your feed.
 
 ### For Trainers
-- Create fitness plans with pricing and duration
-- Edit and delete own plans
-- View all created plans
-- Role-based access control
+- **Dashboard**: Manage your created plans and view subscriber counts.
+- **Plan Creation**: intuitive tools to create detailed workout plans with pricing and duration.
+- **Community Building**: Gain followers and grow your fitness brand.
 
-## Project Structure
+## 🛠 Tech Stack
+
+- **Backend**: Node.js, Express.js, MongoDB (Mongoose), JWT Authentication.
+- **Frontend**: Vanilla HTML5, CSS3 (Modern Flexbox/Grid), JavaScript (ES6+).
+- **Deployment**:
+    - **Frontend**: Ready for Netlify (Static hosting).
+    - **Backend**: Ready for Render/Heroku (Node.js runtime).
+
+## 📦 Installation
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/waggishPlayer/trueigTech.git
+    cd trueigTech
+    ```
+
+2.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+
+3.  **Environment Setup**:
+    Create a `.env` file in the root directory (do not commit this file):
+    ```env
+    PORT=5001
+    MONGODB_URI=mongodb+srv://<your_db_user>:<your_db_password>@<your_cluster>.mongodb.net/?appName=fitplanhub
+    JWT_SECRET=your_super_secret_jwt_key
+    ```
+
+4.  **Run Locally**:
+    ```bash
+    npm run dev
+    ```
+    - The server will start on `http://localhost:5001`.
+    - Open `http://localhost:5001/index.html` in your browser.
+
+## 🌍 Deployment Strategy
+
+This repository uses a multi-branch deployment strategy:
+
+- **`main`**: The primary development branch.
+- **`frontend-deploy`**: Contains the frontend code optimized for static site hosts like Netlify.
+- **`backend-deploy`**: Contains the backend API code optimized for connection-based hosts like Render.
+
+### How to Deploy
+
+1.  **Backend (Render/Railway)**:
+    - Connect your repo to Render.
+    - Select the `backend-deploy` branch.
+    - Set the `Build Command` to `npm install`.
+    - Set the `Start Command` to `node server.js`.
+    - Add your `.env` variables in the dashboard.
+
+2.  **Frontend (Netlify/Vercel)**:
+    - Connect your repo to Netlify.
+    - Select the `frontend-deploy` branch.
+    - Set the `Publish directory` to `public`.
+    - **Important**: Update the `API_BASE` URL in `public/app.js` to point to your deployed backend URL.
+
+## 📂 Project Structure
 
 ```
-trueigTech/
-├── config/
-│   └── database.js          # MongoDB connection
-├── models/
-│   ├── User.js             # User schema (users, trainers)
-│   ├── FitnessPlan.js      # Fitness plan schema
-│   ├── Subscription.js     # User subscriptions
-│   └── TrainerFollower.js  # Follow relationships
-├── middleware/
-│   └── auth.js             # JWT authentication & role checks
-├── routes/
-│   ├── auth.js             # Signup & login
-│   ├── plans.js            # Plan CRUD & subscriptions
-│   ├── trainers.js         # Trainer listing & following
-│   └── feed.js             # Personalized feed
-├── public/
-│   ├── index.html          # Frontend interface
-│   ├── styles.css          # Mobile-responsive styling
-│   └── app.js              # Frontend logic
-├── Documentation/
-│   ├── README.md
-│   ├── Schema_Design.md
-│   ├── API_Design.md
-│   └── FitPlanHub_Postman_Collection.json
-├── server.js               # Main server file
-├── package.json
-└── .env.example
+├── models/             # Mongoose schemas (User, FitnessPlan, Subscription, etc.)
+├── routes/             # Express API routes (Auth, Plans, Feed, Trainers)
+├── public/             # Static frontend files (HTML, CSS, JS)
+│   ├── app.js          # Main frontend logic
+│   ├── styles.css      # Global styles
+│   └── ...html         # Page templates
+├── middleware/         # Auth and role-based access control
+├── config/             # Database connection configuration
+├── scripts/            # Utility scripts (e.g., reset_db.js)
+├── server.js           # App entry point
+└── package.json        # Dependencies and scripts
 ```
 
-## Setup & Installation
-
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-2. **Configure environment:**
-   - Copy `.env.example` to `.env`
-   - Update MongoDB connection string if needed
-   - Change JWT_SECRET for production
-
-3. **Start the server:**
-   ```bash
-   npm run dev
-   ```
-
-4. **Access the application:**
-   - Backend API: http://localhost:5000
-   - Frontend: http://localhost:5000/index.html
-
-## API Endpoints
-
-### Authentication
-- `POST /auth/signup` - Register new user/trainer
-- `POST /auth/login` - Login and get JWT token
-
-### Plans
-- `POST /plans` - Create plan (trainer only)
-- `PUT /plans/:planId` - Update plan (owner only)
-- `DELETE /plans/:planId` - Delete plan (owner only)
-- `GET /plans` - Get all plans (preview)
-- `GET /plans/:planId` - Get plan details
-- `POST /plans/:planId/subscribe` - Subscribe to plan (user only)
-
-### Trainers
-- `GET /trainers` - List all trainers
-- `GET /trainers/:trainerId` - Get trainer details
-- `POST /trainers/:trainerId/follow` - Follow trainer (user only)
-- `DELETE /trainers/:trainerId/unfollow` - Unfollow trainer (user only)
-
-### Feed
-- `GET /feed` - Get personalized feed (user only)
-
-## Testing with Postman
-
-1. Import `Documentation/FitPlanHub_Postman_Collection.json` into Postman
-2. Set up environment variables:
-   - `baseUrl`: http://localhost:5000
-   - `token`: (will be auto-set after login)
-3. Follow the test flow:
-   - Signup as user and trainer
-   - Login with each account
-   - Create plans as trainer
-   - Subscribe and follow as user
-   - Test all endpoints
-
-## Database Schema
-
-All collections use camelCase naming with proper indexes:
-
-- **users** - User accounts (role: USER or TRAINER)
-- **fitnessPlans** - Fitness plans created by trainers
-- **subscriptions** - User subscriptions to plans
-- **trainerFollowers** - Follow relationships
-
-See `Documentation/Schema_Design.md` for detailed schema.
-
-## Access Control
-
-- Users can subscribe to plans and follow trainers
-- Trainers can create, edit, and delete their own plans
-- Trainers cannot subscribe to plans
-- Users cannot create plans
-- Subscribed users get full plan details
-
-## Development Notes
-
-- Code follows readable, human-like patterns
-- Minimal abstractions for clarity
-- Essential comments only where needed
-- Natural variable and function naming
-- Clean file structure without over-engineering
-
-## License
-
-ISC
+---
+*Built with ❤️ for FitPlanHub.*
