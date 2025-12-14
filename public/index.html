@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitPlanHub - Your Fitness Journey</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FitPlanHub</h1>
+      <nav id="nav">
+        <button id="logoutBtn" style="display: none;">Logout</button>
+      </nav>
+    </header>
+
+    <!-- Login/Signup Section -->
+    <section id="authSection" class="active">
+      <div class="auth-tabs">
+        <button id="loginTab" class="auth-tab active">Login</button>
+        <button id="signupTab" class="auth-tab">Sign Up</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <h2>Welcome Back</h2>
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+
+      <form id="signupForm" class="auth-form" style="display: none;">
+        <h2>Create Account</h2>
+        <input type="text" id="signupName" placeholder="Full Name" required>
+        <input type="email" id="signupEmail" placeholder="Email" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <div class="role-selector">
+          <label>
+            <input type="radio" name="role" value="USER" checked>
+            <span>User</span>
+          </label>
+          <label>
+            <input type="radio" name="role" value="TRAINER">
+            <span>Trainer</span>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+      </form>
+    </section>
+
+    <!-- User Dashboard -->
+    <section id="userDashboard" style="display: none;">
+      <div class="dashboard-header">
+        <h2>My Dashboard</h2>
+        <p id="userName"></p>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="plansTab">All Plans</button>
+        <button class="tab" data-tab="feedTab">My Feed</button>
+        <button class="tab" data-tab="trainersTab">Trainers</button>
+      </div>
+
+      <div id="plansTab" class="tab-content active">
+        <h3>Available Fitness Plans</h3>
+        <div id="plansList" class="cards-grid"></div>
+      </div>
+
+      <div id="feedTab" class="tab-content">
+        <h3>Plans from Trainers You Follow</h3>
+        <div id="feedList" class="cards-grid"></div>
+      </div>
+
+      <div id="trainersTab" class="tab-content">
+        <h3>Find Trainers</h3>
+        <div id="trainersList" class="cards-grid"></div>
+      </div>
+    </section>
+
+    <!-- Trainer Dashboard -->
+    <section id="trainerDashboard" style="display: none;">
+      <div class="dashboard-header">
+        <h2>Trainer Dashboard</h2>
+        <p id="trainerName"></p>
+      </div>
+
+      <button id="showCreatePlanBtn" class="btn btn-primary">+ Create New Plan</button>
+
+      <div id="createPlanForm" class="form-card" style="display: none;">
+        <h3>Create Fitness Plan</h3>
+        <form id="planForm">
+          <input type="text" id="planTitle" placeholder="Plan Title" required>
+          <textarea id="planDescription" placeholder="Plan Description" rows="4" required></textarea>
+          <input type="number" id="planPrice" placeholder="Price ($)" step="0.01" min="0" required>
+          <input type="number" id="planDuration" placeholder="Duration (Days)" min="1" required>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Plan</button>
+            <button type="button" id="cancelPlanBtn" class="btn btn-secondary">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="my-plans">
+        <h3>My Plans</h3>
+        <div id="myPlansList" class="cards-grid"></div>
+      </div>
+    </section>
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
